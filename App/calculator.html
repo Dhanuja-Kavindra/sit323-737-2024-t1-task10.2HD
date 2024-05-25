@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            background-color: #04AA6D;
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.4s, color 0.4s, border 0.4s;
+        }
+
+        .button:hover {
+            background-color: white;
+            color: #04AA6D;
+            border: 2px solid #04AA6D;
+        }
+
+        .logout-button {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.4s, color 0.4s, border 0.4s;
+        }
+
+        .logout-button:hover {
+            background-color: white;
+            color: #FF5733;
+            border: 2px solid #FF5733;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculator</h1>
+    <div class="calculator">
+        <input type="text" id="num_1" required placeholder="Number 1 or Base">
+        <input type="text" id="num_2" required placeholder="Number 2 or Exponent or Divisor"><br>
+        <button onclick="calculate('add')" class="button">Add</button>
+        <button onclick="calculate('subtract')" class="button">Subtract</button>
+        <button onclick="calculate('multiply')" class="button">Multiply</button>
+        <button onclick="calculate('divide')" class="button">Divide</button>
+        <button onclick="calculate('expo')" class="button">Exponentiate</button>
+        <button onclick="calSqrt()" class="button">Square Root</button>
+        <button onclick="calculate('mod')" class="button">Modulo</button>
+        <div class="result">
+            Result: <span id="result"></span>
+        </div>
+        <button onclick="logout()" class="logout-button">Logout</button>
+    </div>
+    <script src="cal_app.js"></script>
+    <script>
+        function logout() {
+            fetch('/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/login.html';
+                } else {
+                    alert('Logout failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Logout failed');
+            });
+        }
+    </script>
+</body>
+</html>
