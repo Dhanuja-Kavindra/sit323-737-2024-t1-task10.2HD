@@ -13,21 +13,44 @@ spec:
         app: mongo
     spec:
       containers:
-        - image: mongo
+        - image: mongo:4.0.8
           name: mongo
-          args: ["--dbpath", "/data/db"]
+          args: ["--config", "/etc/mongod.conf"]
+          ports:
+            - containerPort: 27017
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
-              value: "admin1"
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
                   name: mongodb-secret
+                  key: password
           volumeMounts:
-            - mountPath: /data/db
-              name: mongo-volume
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d/init-mongo.js
+              subPath: init-mongo.js
+            - name: config-volume
+              mountPath: /etc/mongod.conf
+              subPath: mongod.conf
       volumes:
-        - name: mongo-volume
+        - name: mongo-persistent-storage
           persistentVolumeClaim:
             claimName: mongo-pvc
+        - name: init-script
+          configMap:
+            name: mongo-config
+            items:
+              - key: init-mongo.js
+                path: init-mongo.js
+        - name: config-volume
+          configMap:
+            name: mongo-config
+            items:
+              - key: mongod.conf
+                path: mongod.conf

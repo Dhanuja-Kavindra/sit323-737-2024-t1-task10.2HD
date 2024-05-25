@@ -4,9 +4,9 @@ metadata:
   name: mongo-pvc
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: "demo-storage"
+  storageClassName: mongo-storage
   

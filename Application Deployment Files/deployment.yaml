@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cal-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cal-server
+  template:
+    metadata:
+      labels:
+        app: cal-server
+    spec:
+      containers:
+      - name: cal-server
+        image: us-central1-docker.pkg.dev/sit737-task-10-2hd/sit737-docker-reg/advancecal-image:tag14
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always

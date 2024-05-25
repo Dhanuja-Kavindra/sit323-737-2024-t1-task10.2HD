@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-config
+data:
+  init-mongo.js: |
+    db = db.getSiblingDB('calculatorApp');
+    db.createUser({
+      user: 'admin1',
+      pwd: 'test123',
+      roles: [{ role: 'readWrite', db: 'calculatorApp' }]
+    });
+    db.createCollection('User');
+
+  mongod.conf: |
+    net:
+      bindIp: 0.0.0.0
